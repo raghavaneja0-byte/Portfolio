@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raghav Aneja | Portfolio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- BRANDING & COLOR PALETTE --- */
+        :root {
+            --bg-dark: #060b14;       
+            --bg-card: #0f1a2c;       
+            --neon-blue: #00f2fe;     
+            --glow-blue: #4facfe;     
+            --text-light: #ffffff;    
+            --text-muted: #8fa0ba;    
+            --transition-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        body.modal-open {
+            overflow: hidden; /* Prevents background scrolling when dialog is open */
+        }
+
+        /* --- GLOBAL SCROLLBAR --- */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-dark);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(var(--neon-blue), var(--glow-blue));
+            border-radius: 4px;
+        }
+
+        /* --- STICKY NAVIGATION MENU --- */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px 8%;
+            background: rgba(6, 11, 20, 0.85);
+            backdrop-filter: blur(12px);
+            z-index: 100;
+            border-bottom: 1px solid rgba(0, 242, 254, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            opacity: 0;
+            transform: translateY(-20px);
+            animation: headerEntrance 0.8s var(--transition-smooth) forwards;
+        }
+
+        .header-logo {
+            font-size: 1.4rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .header-logo span {
+            background: linear-gradient(90deg, var(--neon-blue), var(--glow-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--neon-blue);
+            text-shadow: 0 0 10px rgba(0, 242, 254, 0.4);
+        }
+
+        /* --- GLOBAL SCROLL REVEAL UTILITIES --- */
+        .reveal-node {
+            opacity: 0;
+            transform: translateY(35px);
+            transition: opacity 0.8s ease, transform 0.8s var(--transition-smooth);
+        }
+
+        .reveal-node.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        section {
+            padding: 70px 8% 40px; 
+            min-height: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            color: var(--text-light);
+            margin-bottom: 35px;
+            position: relative;
+            font-weight: 700;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--neon-blue), var(--glow-blue));
+            border-radius: 2px;
+        }
+
+        /* --- GLOW BUTTONS --- */
+        .btn-premium {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 24px;
+            border: 2px solid var(--neon-blue);
+            background: rgba(0, 242, 254, 0.03);
+            color: var(--neon-blue);
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.4s var(--transition-smooth);
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.15);
+        }
+
+        .btn-premium:hover {
+            background: linear-gradient(135deg, var(--neon-blue), var(--glow-blue));
+            color: var(--bg-dark);
+            box-shadow: 0 0 25px rgba(0, 242, 254, 0.6);
+            transform: translateY(-2px);
+            border-color: transparent;
+        }
+
+        .btn-nav-download {
+            padding: 8px 18px;
+            font-size: 0.85rem;
+            box-shadow: 0 0 10px rgba(0, 242, 254, 0.2);
+        }
+
+        /* --- HERO GRID CONFIGURATION --- */
+        #home {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            align-items: center;
+            gap: 20px; 
+            padding-top: 130px;
+        }
+
+        .hero-left {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: textEntrance 0.8s var(--transition-smooth) 0.2s forwards;
+            padding-right: 15px; 
+        }
+
+        .hero-left h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .hero-left .highlight {
+            background: linear-gradient(90deg, var(--neon-blue), var(--glow-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .typing-container {
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .hero-left h2 {
+            font-size: 1.35rem;
+            color: var(--neon-blue);
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: 3px solid var(--neon-blue); 
+            width: 0;
+            animation: 
+                typeWriterText 2.5s steps(48, end) 1s forwards,
+                blinkCursorTerminal 0.75s step-end infinite;
+        }
+
+        .hero-left p {
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            margin-bottom: 30px;
+            max-width: 600px;
+        }
+
+        .hero-right {
+            display: flex;
+            justify-content: center; 
+            align-items: center;
+            opacity: 0;
+            transform: scale(0.95);
+            animation: imageEntrance 1s var(--transition-smooth) 0.4s forwards;
+        }
+
+        /* --- HUD SCIFI CIRCLE FRAME --- */
+        .avatar-hud-frame {
+            position: relative;
+            width: 460px;
+            height: 460px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .avatar-hud-frame::before {
+            content: '';
+            position: absolute;
+            width: 85%;
+            height: 85%;
+            background: radial-gradient(circle, rgba(0, 242, 254, 0.25) 0%, transparent 70%);
+            filter: blur(20px);
+            z-index: 0;
+        }
+
+        .hud-circle-ring {
+            position: absolute;
+            width: 95%;
+            height: 95%;
+            border: 2px dashed rgba(0, 242, 254, 0.4);
+            border-radius: 50%;
+            z-index: 1;
+            box-shadow: 0 0 25px rgba(0, 242, 254, 0.15);
+            animation: rotateHUD 25s linear infinite;
+        }
+
+        .hud-circle-ring::before {
+            content: '';
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            right: 12px;
+            bottom: 12px;
+            border: 1px solid rgba(79, 172, 254, 0.2);
+            border-top: 3px solid var(--neon-blue);
+            border-bottom: 3px solid var(--neon-blue);
+            border-radius: 50%;
+            animation: rotateHUDInverse 12s linear infinite;
+        }
+
+        .hud-image-clip {
+            position: relative;
+            width: 85%;
+            height: 85%;
+            border-radius: 50%;
+            background: radial-gradient(circle, #0e192b 40%, #060b14 100%);
+            border: 2px solid rgba(0, 242, 254, 0.6);
+            box-shadow: inset 0 0 35px rgba(0, 242, 254, 0.35), 0 0 30px rgba(0, 242, 254, 0.25);
+            z-index: 2;
+            overflow: hidden;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+        }
+
+        .avatar-img-render {
+            width: 95%;
+            height: auto;
+            max-height: 95%;
+            object-fit: contain;
+            transform: scale(1.02) translateY(4px);
+            transition: transform 0.4s var(--transition-smooth);
+            pointer-events: none;
+            z-index: 3;
+        }
+
+        .avatar-hud-frame:hover .avatar-img-render {
+            transform: scale(1.08) translateY(1px);
+        }
+
+        /* --- ABOUT DESCRIPTION --- */
+        .about-full-text {
+            width: 100%;
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            margin-top: 15px;
+            text-align: justify;
+        }
+
+        /* --- VISUAL CHARTS METRICS --- */
+        .skills-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            background: var(--bg-card);
+            padding: 40px;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 242, 254, 0.05);
+        }
+
+        .skills-column h3 {
+            font-size: 1.3rem;
+            margin-bottom: 30px;
+            color: var(--text-light);
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .bar-wrapper {
+            margin-bottom: 22px;
+        }
+
+        .bar-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 6px;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .bar-info span i {
+            color: var(--neon-blue);
+            margin-right: 8px;
+            width: 16px;
+        }
+
+        .track-background {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .fill-meter {
+            height: 100%;
+            background: linear-gradient(90deg, var(--glow-blue), var(--neon-blue));
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 242, 254, 0.5);
+            width: 0;
+            transition: width 1.5s cubic-bezier(0.1, 1, 0.1, 1);
+        }
+
+        .radial-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            justify-items: center;
+        }
+
+        .radial-item {
+            text-align: center;
+        }
+
+        .circular-progress {
+            position: relative;
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            background: conic-gradient(rgba(255,255,255,0.05) 0deg, rgba(255,255,255,0.05) 360deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.1);
+            transition: background 1.5s cubic-bezier(0.1, 1, 0.1, 1);
+        }
+
+        .circular-progress::before {
+            content: "";
+            position: absolute;
+            width: 92px;
+            height: 92px;
+            border-radius: 50%;
+            background: var(--bg-card);
+        }
+
+        .percent-text {
+            position: relative;
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--text-light);
+            z-index: 2;
+        }
+
+        .radial-item p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        /* --- INTERACTIVE GRID MATRIX CARDS --- */
+        .showcase-deck-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 25px;
+        }
+
+        .interactive-launch-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            border: 1px solid rgba(0, 242, 254, 0.05);
+            padding: 30px;
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            cursor: pointer;
+            position: relative;
+            transition: border 0.3s, transform 0.3s, box-shadow 0.3s;
+        }
+
+        .interactive-launch-card:hover {
+            border-color: var(--neon-blue);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 242, 254, 0.15);
+        }
+
+        .node-dynamic-icon {
+            width: 54px;
+            height: 54px;
+            background: rgba(0, 242, 254, 0.06);
+            border: 1px solid rgba(0, 242, 254, 0.2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--neon-blue);
+            font-size: 1.5rem;
+            flex-shrink: 0;
+            transition: all 0.3s;
+        }
+
+        .interactive-launch-card:hover .node-dynamic-icon {
+            background: var(--neon-blue);
+            color: var(--bg-dark);
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.4);
+        }
+
+        .node-meta-text {
+            flex-grow: 1;
+        }
+
+        .node-meta-text h3 {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--text-light);
+            margin-bottom: 4px;
+            line-height: 1.4;
+        }
+
+        .node-meta-text h4 {
+            font-size: 0.9rem;
+            color: var(--neon-blue);
+            font-weight: 500;
+            margin-bottom: 6px;
+        }
+
+        .node-meta-text .timeline-stamp {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .window-launch-indicator {
+            position: absolute;
+            bottom: 15px;
+            right: 20px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            opacity: 0.5;
+            transition: all 0.3s;
+        }
+
+        .interactive-launch-card:hover .window-launch-indicator {
+            opacity: 1;
+            color: var(--neon-blue);
+        }
+
+        /* --- SAME-WINDOW DIALOGUE BOX (MODAL OVERLAY) --- */
+        .dialogue-overlay-mask {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(3, 6, 11, 0.85);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s var(--transition-smooth);
+        }
+
+        .dialogue-overlay-mask.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .dialogue-modal-vault {
+            background: var(--bg-card);
+            border: 1px solid rgba(0, 242, 254, 0.25);
+            box-shadow: 0 20px 50px rgba(0, 242, 254, 0.15);
+            border-radius: 20px;
+            width: 90%;
+            max-width: 780px;
+            max-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            transform: translateY(30px) scale(0.95);
+            transition: transform 0.4s var(--transition-smooth);
+        }
+
+        .dialogue-overlay-mask.active .dialogue-modal-vault {
+            transform: translateY(0) scale(1);
+        }
+
+        .dialogue-header-bar {
+            padding: 30px 35px 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+        }
+
+        .dialogue-header-bar h2 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-light);
+            margin-bottom: 4px;
+            padding-right: 30px;
+        }
+
+        .dialogue-header-bar h3 {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--neon-blue);
+        }
+
+        .dialogue-close-x {
+            position: absolute;
+            top: 30px;
+            right: 35px;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .dialogue-close-x:hover {
+            color: var(--neon-blue);
+        }
+
+        .dialogue-payload-scroller {
+            padding: 30px 35px;
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+
+        .dialogue-payload-scroller ul {
+            list-style: none;
+        }
+
+        .dialogue-payload-scroller li {
+            position: relative;
+            padding-left: 22px;
+            margin-bottom: 16px;
+            font-size: 0.98rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            text-align: justify;
+        }
+
+        .dialogue-payload-scroller li::before {
+            content: "•";
+            color: var(--neon-blue);
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+            font-size: 1.2rem;
+            top: -2px;
+        }
+
+        .dialogue-payload-scroller li:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Dialogue Box Crown Achievement Box */
+        .dialogue-payload-scroller li.crown-achievement-box {
+            background: rgba(0, 242, 254, 0.06);
+            border-left: 4px solid var(--neon-blue);
+            padding: 18px 20px 18px 40px;
+            border-radius: 0 12px 12px 0;
+            color: var(--text-light);
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .dialogue-payload-scroller li.crown-achievement-box::before {
+            content: "🏆";
+            position: absolute;
+            left: 14px;
+            font-size: 1.15rem;
+            top: 16px;
+        }
+
+        .dialogue-footer-action {
+            padding: 20px 35px 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background: #03060b;
+            padding: 40px 8%;
+            text-align: center;
+            border-top: 1px solid rgba(0, 242, 254, 0.05);
+            margin-top: 40px;
+        }
+
+        footer p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* --- CORE ANIMATIONS --- */
+        @keyframes headerEntrance { 100% { opacity: 1; transform: translateY(0); } }
+        @keyframes textEntrance { 100% { opacity: 1; transform: translateY(0); } }
+        @keyframes imageEntrance { 100% { opacity: 1; transform: scale(1); } }
+        @keyframes typeWriterText { to { width: 100%; } }
+        @keyframes blinkCursorTerminal { from, to { border-color: transparent; } 50% { border-color: var(--neon-blue); } }
+        @keyframes rotateHUD { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes rotateHUDInverse { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
+
+        /* --- RESPONSIVE MATRIX --- */
+        @media (max-width: 1024px) {
+            #home { grid-template-columns: 1fr; text-align: center; padding-top: 140px; }
+            .hero-right { justify-content: center; margin-top: 35px; }
+            .avatar-hud-frame { width: 380px; height: 380px; }
+            .hero-left h2 { white-space: normal; overflow: visible; border: none; width: auto; animation: none; }
+            .hero-left p { margin-left: auto; margin-right: auto; }
+            .skills-container { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 900px) {
+            header { padding: 15px 5%; }
+            nav { display: none; } 
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-logo">Port<span>folio</span></div>
+        <nav id="navMenu">
+            <a href="#home" class="nav-item active">Home</a>
+            <a href="#about" class="nav-item">About</a>
+            <a href="#skills" class="nav-item">Skills</a>
+            <a href="#experience" class="nav-item">Experience</a>
+            <a href="#projects" class="nav-item">Projects</a>
+            <a href="Raghav aneja.pdf" download class="btn-premium btn-nav-download"><i class="fa-solid fa-cloud-arrow-down"></i> Download CV</a>
+        </nav>
+    </header>
+
+    <section id="home">
+        <div class="hero-left">
+            <h1>Hi, I'm <span class="highlight">Raghav Aneja</span></h1>
+            <div class="typing-container">
+                <h2>Marketing Analytics & Business Strategy Specialist</h2>
+            </div>
+            <p>Bridging the gap between empirical quantitative data insights and high-impact strategic brand and business development.</p>
+            <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                <a href="mailto:raghavaneja0@gmail.com" class="btn-premium"><i class="fa-solid fa-envelope"></i> Email Me</a>
+                <a href="https://www.linkedin.com/in/raghav-aneja-a07a1b265/" target="_blank" class="btn-premium"><i class="fa-brands fa-linkedin"></i> LinkedIn</a>
+            </div>
+        </div>
+        
+        <div class="hero-right">
+            <div class="avatar-hud-frame">
+                <div class="hud-circle-ring"></div>
+                <div class="hud-image-clip">
+                    <img src="P2412049_Raghav_Aneja-removebg-preview.png" alt="Raghav Aneja" class="avatar-img-render">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="reveal-node">
+        <h2 class="section-title">About Me</h2>
+        <div class="about-full-text">
+            <p>Growing up in Panipat—one of India’s most prominent industrial and manufacturing hubs—I developed an early fascination with how businesses scale, run efficiently, and solve real-world operational challenges. This environment instilled in me a practical, solution-oriented mindset and a relentless work ethic. I tackle complex problems the same way I approach life: by breaking them down into smaller, actionable pieces and executing with intense discipline. Whether it was a personal commitment during the pandemic where I put my mind to getting in shape and lost 25 kgs in just 2 months through sheer grit, or a professional challenge during my internship where I taught myself advanced Excel via YouTube overnight to analyze consumer perception survey data, I am someone who bridges the gap between a problem and a solution. I combine rigorous data analysis with structured execution to deliver tangible business results.</p>
+        </div>
+    </section>
+
+    <section id="skills" class="reveal-node">
+        <h2 class="section-title">Professional Skills Matrix</h2>
+        <div class="skills-container" style="margin-top: 15px;">
+            
+            <div class="skills-column">
+                <h3>Technical Proficiencies</h3>
+                
+                <div class="bar-wrapper">
+                    <div class="bar-info">
+                        <span><i class="fa-solid fa-database"></i> SQL / MySQL</span>
+                        <span>90%</span>
+                    </div>
+                    <div class="track-background"><div class="fill-meter" data-width="90%"></div></div>
+                </div>
+
+                <div class="bar-wrapper">
+                    <div class="bar-info">
+                        <span><i class="fa-solid fa-chart-column"></i> Power BI & Dashboards</span>
+                        <span>85%</span>
+                    </div>
+                    <div class="track-background"><div class="fill-meter" data-width="85%"></div></div>
+                </div>
+
+                <div class="bar-wrapper">
+                    <div class="bar-info">
+                        <span><i class="fa-solid fa-file-excel"></i> Advanced Excel & Modelling</span>
+                        <span>92%</span>
+                    </div>
+                    <div class="track-background"><div class="fill-meter" data-width="92%"></div></div>
+                </div>
+
+                <div class="bar-wrapper">
+                    <div class="bar-info">
+                        <span><i class="fa-solid fa-calculator"></i> JMP Manufacturing Analytics</span>
+                        <span>78%</span>
+                    </div>
+                    <div class="track-background"><div class="fill-meter" data-width="78%"></div></div>
+                </div>
+            </div>
+
+            <div class="skills-column">
+                <h3>Strategic & Core Strengths</h3>
+                <div class="radial-grid">
+                    
+                    <div class="radial-item">
+                        <div class="circular-progress" data-percent="90">
+                            <span class="percent-text">90%</span>
+                        </div>
+                        <p>Market Strategy</p>
+                    </div>
+
+                    <div class="radial-item">
+                        <div class="circular-progress" data-percent="85">
+                            <span class="percent-text">85%</span>
+                        </div>
+                        <p>Data-Driven Insights</p>
+                    </div>
+
+                    <div class="radial-item">
+                        <div class="circular-progress" data-percent="80">
+                            <span class="percent-text">80%</span>
+                        </div>
+                        <p>Problem Solving</p>
+                    </div>
+
+                    <div class="radial-item">
+                        <div class="circular-progress" data-percent="88">
+                            <span class="percent-text">88%</span>
+                        </div>
+                        <p>B2B Engagement</p>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="experience" class="reveal-node">
+        <h2 class="section-title">Professional Experience </h2>
+        <div class="showcase-deck-grid" style="margin-top: 15px;">
+            
+            <div class="interactive-launch-card" onclick="openDialogueBox('internship')">
+                <div class="node-dynamic-icon"><i class="fa-solid fa-compass-drafting"></i></div>
+                <div class="node-meta-text">
+                    <h3>Storyboats Consulting</h3>
+                    <h4>Management Intern — Strategy</h4>
+                    <span class="timeline-stamp">Apr 2025 – Jun 2025</span>
+                </div>
+                <div class="window-launch-indicator"><i class="fa-solid fa-expand"></i></div>
+            </div>
+
+            <div class="interactive-launch-card" onclick="openDialogueBox('byjus')">
+                <div class="node-dynamic-icon"><i class="fa-solid fa-chart-line-up"></i></div>
+                <div class="node-meta-text">
+                    <h3>Byju's, Noida</h3>
+                    <h4>Business Development Associate</h4>
+                    <span class="timeline-stamp">Jun 2023 – Aug 2023</span>
+                </div>
+                <div class="window-launch-indicator"><i class="fa-solid fa-expand"></i></div>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="projects" class="reveal-node">
+        <h2 class="section-title">Academic Case Insights </h2>
+        <div class="showcase-deck-grid" style="margin-top: 15px;">
+            
+            <div class="interactive-launch-card" onclick="openDialogueBox('project1')">
+                <div class="node-dynamic-icon"><i class="fa-solid fa-shirt"></i></div>
+                <div class="node-meta-text">
+                    <h3>Adidas Demand Forecasting</h3>
+                    <h4>Lead Data Analyst & Researcher</h4>
+                    <span class="timeline-stamp">Manufacturing & Operations</span>
+                </div>
+                <div class="window-launch-indicator"><i class="fa-solid fa-expand"></i></div>
+            </div>
+
+            <div class="interactive-launch-card" onclick="openDialogueBox('project2')">
+                <div class="node-dynamic-icon"><i class="fa-solid fa-car-side"></i></div>
+                <div class="node-meta-text">
+                    <h3>Corporate Mobility Fleet Strategy</h3>
+                    <h4>Strategic Consultant</h4>
+                    <span class="timeline-stamp">Client Focus: Infosys</span>
+                </div>
+                <div class="window-launch-indicator"><i class="fa-solid fa-expand"></i></div>
+            </div>
+
+            <div class="interactive-launch-card" onclick="openDialogueBox('project3')">
+                <div class="node-dynamic-icon"><i class="fa-solid fa-diagram-project"></i></div>
+                <div class="node-meta-text">
+                    <h3>Strategic Corporate Analysis</h3>
+                    <h4>Strategic Analyst </h4>
+                    <span class="timeline-stamp">Subject: CirrOps Solutions</span>
+                </div>
+                <div class="window-launch-indicator"><i class="fa-solid fa-expand"></i></div>
+            </div>
+
+            <div class="interactive-launch-card" onclick="openDialogueBox('project4')">
+                <div class="node-dynamic-icon"><i class="fa-solid fa-brain"></i></div>
+                <div class="node-meta-text">
+                    <h3>Predictive Credit Risk Modeling</h3>
+                    <h4>Data Scientist & ML Engineer</h4>
+                    <span class="timeline-stamp">Algorithmic Classification</span>
+                </div>
+                <div class="window-launch-indicator"><i class="fa-solid fa-expand"></i></div>
+            </div>
+
+            <div class="interactive-launch-card" onclick="openDialogueBox('project5')">
+                <div class="node-dynamic-icon"><i class="fa-solid fa-pizza-slice"></i></div>
+                <div class="node-meta-text">
+                    <h3>Pizza Sales Revenue Analysis</h3>
+                    <h4>Database Analyst & BI Developer</h4>
+                    <span class="timeline-stamp">MySQL / Business Intelligence</span>
+                </div>
+                <div class="window-launch-indicator"><i class="fa-solid fa-expand"></i></div>
+            </div>
+
+        </div>
+    </section>
+
+    <div class="dialogue-overlay-mask" id="dialogueMask" onclick="closeDialogueBox(event)">
+        <div class="dialogue-modal-vault">
+            <div class="dialogue-header-bar">
+                <h2 id="modalTitle">Project Title</h2>
+                <h3 id="modalSubtitle">Subtitle details</h3>
+                <button class="dialogue-close-x" onclick="forceCloseModal()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="dialogue-payload-scroller">
+                <ul id="modalBulletsContainer">
+                    </ul>
+            </div>
+            <div class="dialogue-footer-action">
+                <button class="btn-premium" style="padding: 8px 20px; font-size: 0.9rem;" onclick="forceCloseModal()">Close Details</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Raghav Aneja. Built with crisp clean optimization.</p>
+    </footer>
+
+    <script>
+        // Data Vault Storage Object containing full reports
+        const contentDataVault = {
+            internship: {
+                title: "Storyboats Consulting & Creative Services Private Limited, Gurugram",
+                subtitle: "Management Intern — Strategic Marketing, Content Development, and GTM Planning",
+                bullets: [
+                    "<strong style='color:#00f2fe;'>🏆 Major Achievement:</strong> Conceptualized 2–3 banner video ad ideas during internship, with 1 idea selected for final production, now featured as the primary landing video on company website, strengthening brand communication and user engagement.",
+                    "<strong>Brand Purpose & Multi-Project Content Strategy:</strong> Formulated insight-driven brand storylines, campaign scripts, and promotional strategies for diverse commercial and developmental brands, balancing cultural nuance with commercial scalability.",
+                    "<strong>Integrated Marketing & Brand Scripting (Whistler):</strong> Shaped a confident, youthful brand tone for a new-age whiskey brand; developed comprehensive brand scripts and storytelling-focused digital launch narratives.",
+                    "<strong>Sensory Branding & Luxury Gifting Innovation (Indri):</strong> Ideated concept-led, premium corporate gifting solutions for an exclusive 11-year special edition single malt, anchoring tactile and narrative-driven elements to enhance brand memory.",
+                    "<strong>Go-to-Market Strategy & Experiential Branding (Booshkata Birthday Box):</strong> Formulated a comprehensive multi-channel GTM strategy, child-centric narrative structures, and visual display guidelines for an experiential storytelling birthday product across retail and digital platforms.",
+                    "<strong>Corporate Rebranding & Market Positioning (Rockwell):</strong> Collaborated on the phased rollout blueprint and strategic market-entry messaging for a legacy appliance brand undergoing a complete corporate rebranding, modernizing its voice while retaining engineering authority.",
+                    "<strong>B2B Institutional Growth & Global Expansion (Storyboats Academy):</strong> Conducted rigorous global market mapping and pipeline development targeting academic institutions; identified and mapped high-level decision-makers to scale educational outreach.",
+                    "<strong>Data-Driven Communication Strategy (NSDC):</strong> Designed and analyzed a large-scale brand perception survey for the National Skill Development Corporation; parsed quantitative data to deliver precise audience segmentation and communication intervention models.",
+                    "<strong>Gen Z Merchandise Ideation (KitKat):</strong> Translated contemporary cultural triggers into physical touchpoints, creating quirky, non-obvious merchandise assets (e.g., Mood Flippers, Break Cards) designed to deepen brand resonance.",
+                    "<strong>Internal Storytelling & Content Production (Acme):</strong> Orchestrated deep-dive internal communication frameworks, audited and cross-reviewed internal employee narratives, and developed executive audiovisual scripts to unify internal culture with the public brand persona."
+                ]
+            },
+            byjus: {
+                title: "Byju's, Noida",
+                subtitle: "Business Development Associate (Jun 2023 – Aug 2023)",
+                bullets: [
+                    "<strong>Sales Pipeline Architecture:</strong> Managed high-velocity client outreach operations focused on the competitive NEET/JEE product divisions, generating ₹2.61 Lakh in direct program revenue using structured target call matrices.",
+                    "<strong>Consultative Pitching:</strong> Qualified high-intent leads from cold databases using consultative communication frameworks and conducted detailed product demonstrations to align unique student challenges with structured learning solutions."
+                ]
+            },
+            project1: {
+                title: "Demand Forecasting & Planning for Manufacturing",
+                subtitle: "Lead Data Analyst & Researcher | Product Category: Adidas",
+                bullets: [
+                    "<strong>Data Architecture:</strong> Managed a comprehensive historical time-series dataset spanning five years (2018–2022) across multiple product categories, warehouses, and unique product codes to trace distribution patterns.",
+                    "<strong>Predictive Modeling:</strong> Evaluated and developed three statistical forecasting frameworks—Exponential Smoothing, ARIMA, and Seasonal ARIMA—to capture both structural demand growth and short-term variance.",
+                    "<strong>Optimization:</strong> Deployed the Seasonal ARIMA model based on optimized AIC values, successfully predicting a baseline demand of 34,215 units and modeling a 20% safety stock cushion (6,843 units) to minimize manufacturing bottlenecks.",
+                    "<strong>Strategic Alignment:</strong> Formulated a manufacturing rollout plan that mapped data-driven predictions directly to factory production schedules, minimizing resource underutilization and holding costs."
+                ]
+            },
+            project2: {
+                title: "B2B Corporate Mobility Fleet Strategy",
+                subtitle: "Strategic Management Consultant — Group 3 | Client Focus: Infosys",
+                bullets: [
+                    "<strong>Market Sizing (TAM/SAM/SOM):</strong> Modeled the total addressable market within India's ₹10.8T IT landscape, narrowing to a tier-1 city SAM and executing a targeted pilot launch strategy (SOM) focused on the top 5% of corporate leaders at Infosys.",
+                    "<strong>Value Proposition Design:</strong> Structured a dedicated product mix centered around specific executive vehicle tiers, optimizing the corporate pricing grid against total cost of ownership.",
+                    "<strong>Operations & Infrastructure Planning:</strong> Formulated a comprehensive 'Zero-Downtime Mobility Promise' backed by real-time telematics analytics and predictive maintenance models across a network of 1,300+ service centers.",
+                    "<strong>Lead Generation Framework:</strong> Designed and compiled a structured corporate outreach repository mapping senior executive decision-makers across TCS, Wipro, HCL, and Accenture to support scaled B2B acquisition."
+                ]
+            },
+            project3: {
+                title: "Strategic Corporate Analysis & Management Frameworks",
+                subtitle: "Strategic Analyst — Group B-8 | Subject: CirrOps Solutions",
+                bullets: [
+                    "<strong>Founder-Led Diagnostics:</strong> Structured and executed a deep-dive corporate case analysis based on qualitative interviews with founder Nirav Pancholi to map out the growth trajectory of an AWS Advanced Tier Partner.",
+                    "<strong>Strategic Pivot Mapping:</strong> Traced the firm's strategic transition through three growth phases: <em>Survival &rarr; Growth &rarr; Differentiation</em>, linking empirical choices to core principles of agile resource orchestration.",
+                    "<strong>Blue Ocean Methodology:</strong> Evaluated the company's automated compliance and AI-driven DevOps tools to showcase how modern tech startups can bypass traditional competition by systematically addressing client friction points."
+                ]
+            },
+            project4: {
+                title: "Predictive Credit Risk & Loan Classification Modeling",
+                subtitle: "Data Scientist & Machine Learning Engineer",
+                bullets: [
+                    "<strong>Data Pipeline Engineering:</strong> Built an end-to-end classification workflow in Python, processing mixed-type variables including applicant/co-applicant income brackets, credit history indicators, and property locations.",
+                    "<strong>Algorithmic Benchmarking:</strong> Deployed and benchmarked multiple machine learning models, assessing performance drops between default hyperparameters and optimized configurations.",
+                    "<strong>Model Tuning & Deployment Selection:</strong> Selected an optimized AdaBoost classifier yielding a generalization accuracy of ~79%, deliberately balancing variance and bias to mitigate the overfitting risks seen in default random forest models."
+                ]
+            },
+            project5: {
+                title: "Pizza Sales Revenue & Business Intelligence Analysis",
+                subtitle: "Database Analyst & BI Developer | SQL / MySQL",
+                bullets: [
+                    "<strong>Relational Schema Mapping:</strong> Engineered structural relational connections across a multi-table database environment, joining <code>orders</code>, <code>order_details</code>, <code>pizzas</code>, and <code>pizza_types</code> datasets while optimizing index constraints for multi-million row scalability.",
+                    "<strong>Structured Analytical Queries:</strong> Developed and executed 13 complex business metrics across basic, intermediate, and advanced syntax benchmarks to isolate critical distribution inefficiencies.",
+                    "<strong>Peak Volume Forecasting:</strong> Isolated key business bottlenecks by querying hourly distribution frequencies to discover peak order cycles, supporting real-time staff scheduling and inventory preparation models.",
+                    "<strong>Advanced Revenue Segmentation:</strong> Authored advanced subqueries and window filtering matrices (<code>ROW_NUMBER() OVER (PARTITION BY... ORDER BY...)</code>) to identify each distinct menu category's top 3 revenue-producing contributors.",
+                    "<strong>Cumulative Performance Tracking:</strong> Modeled time-series data streams using running totals to chart exact cumulative revenue trends, driving executive data-backed corporate planning and promotional strategy updates."
+                ]
+            }
+        };
+
+        // SAME WINDOW DIALOGUE SYSTEM ENGINES
+        const maskElement = document.getElementById('dialogueMask');
+        const titleElement = document.getElementById('modalTitle');
+        const subtitleElement = document.getElementById('modalSubtitle');
+        const bulletsContainer = document.getElementById('modalBulletsContainer');
+
+        function openDialogueBox(vaultKey) {
+            const currentData = contentDataVault[vaultKey];
+            if (!currentData) return;
+
+            // Clear previous content payload
+            bulletsContainer.innerHTML = '';
+
+            // Inject targeted textual context
+            titleElement.textContent = currentData.title;
+            subtitleElement.textContent = currentData.subtitle;
+
+            // Compile bullets array with custom styles directly into scroller container
+            currentData.bullets.forEach(bulletText => {
+                const liItem = document.createElement('li');
+                
+                // Keep the structural crown styling intact for achievements
+                if (bulletText.includes("🏆")) {
+                    liItem.className = 'crown-achievement-box';
+                    liItem.innerHTML = bulletText.replace("<strong style='color:#00f2fe;'>🏆 Major Achievement:</strong>", "<strong>Major Achievement:</strong>");
+                } else {
+                    liItem.innerHTML = bulletText;
+                }
+                
+                bulletsContainer.appendChild(liItem);
+            });
+
+            // Activate dialogue visibility layout overlay natively on same window
+            maskElement.classList.add('active');
+            document.body.classList.add('modal-open');
+        }
+
+        function closeDialogueBox(event) {
+            // Closes modal only if mask overlay background is clicked (and not modal contents)
+            if (event.target === maskElement) {
+                forceCloseModal();
+            }
+        }
+
+        function forceCloseModal() {
+            maskElement.classList.remove('active');
+            document.body.classList.remove('modal-open');
+        }
+
+        // Handle Escape Key to exit same-window dialog box safely
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') forceCloseModal();
+        });
+
+        // PROGRESSIVE METRICS LIFTS
+        function runSkillsAnimation() {
+            const meters = document.querySelectorAll('.fill-meter');
+            meters.forEach(meter => {
+                meter.style.width = meter.getAttribute('data-width');
+            });
+
+            const circles = document.querySelectorAll('.circular-progress');
+            circles.forEach(circle => {
+                const targetPercent = parseInt(circle.getAttribute('data-percent'));
+                const deg = (targetPercent / 100) * 360;
+                circle.style.background = `conic-gradient(var(--neon-blue) ${deg}deg, rgba(255,255,255,0.05) ${deg}deg)`;
+            });
+        }
+
+        const revealNodes = document.querySelectorAll('.reveal-node');
+        const scrollRevealObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                    if (entry.target.id === 'skills') {
+                        runSkillsAnimation();
+                    }
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.15 });
+
+        revealNodes.forEach(node => { scrollRevealObserver.observe(node); });
+
+        const sections = document.querySelectorAll('section');
+        const navItems = document.querySelectorAll('.nav-item');
+
+        window.addEventListener('scroll', () => {
+            let currentActive = "";
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 140) {
+                    currentActive = section.getAttribute('id');
+                }
+            });
+
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('href').includes(currentActive)) {
+                    item.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
